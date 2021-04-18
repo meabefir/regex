@@ -1,0 +1,7 @@
+nr nodes
+for each node -> pos.x pos.y id name
+nr transitions
+for each trans -> from_id to_id trans_text
+start_node_id
+nr final nodes
+final_node_id

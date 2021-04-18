@@ -31,6 +31,9 @@ public:
 	Node(EditorState* editor, sf::Font*, sf::Vector2f pos, std::string name = "",
 					sf::Color fill_color = sf::Color::Black, 
 					const float radius = AppData::nodeRadius, const float outlineThick = 4.f);
+	Node(EditorState* editor, sf::Font*, sf::Vector2f pos, std::string id, std::string name,
+		sf::Color fill_color = sf::Color::Green, const float radius = AppData::nodeRadius,
+		const float outlineThick = 4.f);
 	~Node();
 
 	void initVariables();
@@ -42,7 +45,9 @@ public:
 	bool isActive();
 	float getRadius();
 	std::string getName();
+	std::string getId();
 	void setName(std::string);
+	std::vector<Transition*>* getTransitions();
 
 	const float getDistToVector(const sf::Vector2f&);
 
@@ -54,6 +59,7 @@ public:
 	void resetTransitionCreation();
 
 	void addTransitionToNode(Node* node);
+	void addTransitionToNode(Node* node, std::string text);
 	void removeTransition(Transition* trans);
 
 	void update();

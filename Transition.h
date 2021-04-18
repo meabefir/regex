@@ -29,10 +29,14 @@ private:
 
 public:
 	Transition(Node* node1, Node* node2, sf::Color color = sf::Color::Blue);
+	Transition(Node* node1, Node* node2, std::string text, sf::Color color = sf::Color::Blue);
 	~Transition();
 
 	// setter getter
 	void setMidPos(sf::Vector2f);
+	Node* getNode1();
+	Node* getNode2();
+	std::string getText();
 
 	void update();
 	void draw(sf::RenderTarget* target);

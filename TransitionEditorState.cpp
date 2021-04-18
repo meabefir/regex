@@ -55,7 +55,7 @@ void TransitionEditorState::init()
     this->infoText.setString("Type letters separated by comma");
     this->recenterText(this->infoText, this->textPosition + sf::Vector2f(0, 150));
 
-    sf::Vector2u button_size = { 150,75 };
+    sf::Vector2u button_size = { 200,75 };
     int distance_between = 20;
     this->buttons["CANCEL"] = new Button((float)window_size.x / 2 - button_size.x - distance_between,
                             (float)window_size.y * 3.f / 4.f,
@@ -93,19 +93,26 @@ void TransitionEditorState::ok()
     if (this->text == "")
         this->setText("e");
     this->endState();
-    Mouse::freezeMouse(.5f);
+    Mouse::freezeMouse(.2f);
 }
 
 void TransitionEditorState::cancel()
 {
-    this->endState();
+    
     if (this->text == "")
         this->transition->node1->removeTransition(this->transition);
-    Mouse::freezeMouse(.5f);
+    this->endState();
+    Mouse::freezeMouse(.2f);
 }
 
 void TransitionEditorState::handleEvents(sf::Event e)
 {
+    if (e.type == sf::Event::KeyReleased)
+        if (e.key.code == sf::Keyboard::Key::Escape)
+        {
+            this->cancel();
+            return;
+        }
     if (e.type == sf::Event::TextEntered)
     {
         if (e.text.unicode == 8)
@@ -122,6 +129,8 @@ void TransitionEditorState::handleEvents(sf::Event e)
         }
         else
         {
+            if (e.text.unicode == 27)
+                return;
             if (e.text.unicode < 128) {
                 if (e.text.unicode == sf::Keyboard::Key::Space)
                     return;

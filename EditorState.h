@@ -22,6 +22,9 @@ public:
     ~EditorState();
 
     void saveLevel(std::string name);
+    void loadLevel(std::string name);
+    void clearNodes();
+    Node* getNodeFromId(std::string id);
 
     // getter
     Node* getHoverNode();

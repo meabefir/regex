@@ -1,6 +1,7 @@
 #include "MenuState.h"
 #include "Mouse.h"
 #include "LevelSaveState.h"
+#include "LevelLoadState.h"
 
 MenuState::MenuState(sf::RenderWindow* window, std::vector<State*>* states):
 	State(window, states), whiteBox()
@@ -11,7 +12,7 @@ MenuState::MenuState(sf::RenderWindow* window, std::vector<State*>* states):
 	float margin = 25.f;
 	sf::Vector2f size(200, this->window->getSize().y - 2 * margin);
 
-	this->whiteBox.setFillColor(sf::Color(255, 255, 255, 200));
+	this->whiteBox.setFillColor(sf::Color(0, 0, 0, 200));
 	this->whiteBox.setOutlineColor(sf::Color::Black);
 	this->whiteBox.setOutlineThickness(3);
 	this->whiteBox.setSize(size);
@@ -61,7 +62,7 @@ void MenuState::update(const float& dt)
 	
 	if (this->buttons["LOAD"]->isPressed())
 	{
-
+		this->states->push_back(new LevelLoadState(this->window, this->states));
 	}
 	else if (this->buttons["SAVE"]->isPressed())
 	{

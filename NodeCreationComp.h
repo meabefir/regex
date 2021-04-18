@@ -14,7 +14,6 @@ private:
 
 public:
     NodeCreationComp(EditorState*, std::vector<Node*>* nodes);
-    NodeCreationComp();
     ~NodeCreationComp();
 
     void createNode(sf::Vector2f pos);

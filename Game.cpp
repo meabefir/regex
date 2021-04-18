@@ -5,8 +5,8 @@ void Game::initWindow()
 {
 	//sf::VideoMode window_bounds = sf::VideoMode::getDesktopMode();
 	sf::VideoMode window_bounds = sf::VideoMode::getDesktopMode();
-	window_bounds.width = 1280;
-	window_bounds.height = 720;
+	//window_bounds.width = 1280;
+	//window_bounds.height = 720;
 	std::string title = "testing";
 
 	this->window = new sf::RenderWindow(window_bounds, title, sf::Style::Close | sf::Style::Titlebar);

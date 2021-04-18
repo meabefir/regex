@@ -27,12 +27,41 @@ Node::Node(EditorState* editor, sf::Font* font, sf::Vector2f pos,
 	this->text.setString(this->name);
 	this->text.setCharacterSize(40);
 	this->text.setFillColor(sf::Color::Black);
-	//this->text.setPosition(this->shape.getPosition().x - this->text.getGlobalBounds().width / 2.f,
-	//					   this->shape.getPosition().y - this->text.getGlobalBounds().height);
+	
 	this->text.setOrigin(sf::Vector2f(this->text.getGlobalBounds().width / 2.f,
 									  this->text.getGlobalBounds().height));
 	this->text.setPosition(this->shape.getPosition().x,
 						   this->shape.getPosition().y);
+}
+
+Node::Node(EditorState* editor, sf::Font* font, sf::Vector2f pos, std::string id, std::string name,
+		sf::Color fill_color, const float radius, const float outlineThick):
+	editor(editor), radius(radius), id(id), name(name)
+{
+	this->defaultColor = fill_color;
+	this->initVariables();
+
+	// shape stuff
+	this->shape.setPosition(pos);
+	this->shape.setRadius(radius - outlineThick);
+	this->shape.setOutlineColor(sf::Color::Black);
+	this->shape.setFillColor(fill_color);
+	this->shape.setOutlineThickness(outlineThick);
+	this->shape.setOrigin(sf::Vector2f(radius - outlineThick, radius - outlineThick));
+
+	// other stuff
+	this->name = name;
+	// font and text
+	this->font = font;
+	this->text.setFont(*this->font);
+	this->text.setString(this->name);
+	this->text.setCharacterSize(40);
+	this->text.setFillColor(sf::Color::Black);
+	
+	this->text.setOrigin(sf::Vector2f(this->text.getGlobalBounds().width / 2.f,
+		this->text.getGlobalBounds().height));
+	this->text.setPosition(this->shape.getPosition().x,
+		this->shape.getPosition().y);
 }
 
 Node::~Node()
@@ -83,12 +112,22 @@ std::string Node::getName()
 	return this->name;
 }
 
+std::string Node::getId()
+{
+	return this->id;
+}
+
 void Node::setName(std::string s)
 {
 	this->name = s;
 	this->text.setString(s);
 	this->text.setOrigin(sf::Vector2f(this->text.getGlobalBounds().width / 2.f,
 		this->text.getGlobalBounds().height));
+}
+
+std::vector<Transition*>* Node::getTransitions()
+{
+	return &this->transitions;
 }
 
 const float Node::getDistToVector(const sf::Vector2f& vec)
@@ -167,6 +206,21 @@ void Node::addTransitionToNode(Node* node)
 		}
 	}
 	this->transitions.push_back(new Transition(this, node));
+}
+
+void Node::addTransitionToNode(Node* node, std::string text)
+{
+	// check if there are other transitions to that node
+	for (auto& trans : this->transitions)
+	{
+		if (trans->node2 == node)
+		{
+			// edit that transition, return for now
+			trans->openEditMode();
+			return;
+		}
+	}
+	this->transitions.push_back(new Transition(this, node, text));
 }
 
 void Node::removeTransition(Transition* trans)

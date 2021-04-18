@@ -26,6 +26,25 @@ Transition::Transition(Node* node1, Node* node2, sf::Color color):
 	this->openEditMode();
 }
 
+Transition::Transition(Node* node1, Node* node2, std::string text, sf::Color color):
+	node1(node1), node2(node2), color(color),
+	editor(node1->getEditor()),
+	deleteVisible(false), deleteButton(10),
+	spline(node1 != node2 ? new Spline(this, node1, node2, &textRender) : new SplineSelf(this, node1, node2, &textRender)),
+	text(text)
+{
+	deleteButton.setFillColor(sf::Color(255, 0, 0, 150));
+	deleteButton.setOrigin(sf::Vector2f(10.f, 10.f));
+
+	textRender.setFont(*this->editor->getFont());
+	textRender.setCharacterSize(25);
+	textRender.setString(text);
+	textRender.setFillColor(sf::Color::Black);
+
+
+	std::cout << " new transition between " << node1 << ' ' << node2 << '\n';
+}
+
 Transition::~Transition()
 {
 	std::cout << " deleting transition\n";
@@ -35,6 +54,21 @@ Transition::~Transition()
 void Transition::setMidPos(sf::Vector2f v)
 {
 	this->midPos = v;
+}
+
+Node* Transition::getNode1()
+{
+	return this->node1;
+}
+
+Node* Transition::getNode2()
+{
+	return this->node2;
+}
+
+std::string Transition::getText()
+{
+	return this->text;
 }
 
 void Transition::update()

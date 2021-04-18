@@ -52,7 +52,7 @@ void NodeEditorState::init()
     this->infoText.setString("Type a new name for the node");
     this->recenterText(this->infoText, this->textPosition + sf::Vector2f(0, 150));
 
-    sf::Vector2u button_size = { 150,75 };
+    sf::Vector2u button_size = { 200,75 };
     int distance_between = 20;
     this->buttons["CANCEL"] = new Button((float)window_size.x / 2 - button_size.x - distance_between,
         (float)window_size.y * 3.f / 4.f,
@@ -87,17 +87,16 @@ void NodeEditorState::recenterText(sf::Text& txt, sf::Vector2f pos)
 
 void NodeEditorState::ok()
 {
-    // !!!!!!!!!!!!!!!
-    //if (this->text == "")
-    this->setText("lul");
+    if (this->text == "")
+        this->setText("lul");
     this->endState();
-    Mouse::freezeMouse(.5f);
+    Mouse::freezeMouse(.2f);
 }
 
 void NodeEditorState::cancel()
 {
     this->endState();
-    Mouse::freezeMouse(.5f);
+    Mouse::freezeMouse(.2f);
 }
 
 void NodeEditorState::handleEvents(sf::Event e)
