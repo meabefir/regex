@@ -1,0 +1,63 @@
+﻿  EditorState.cpp
+  Game.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\Game.cpp(13,75): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Strutul\Desktop\visual studio\regex\regex\Game.cpp(13,54): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Strutul\Desktop\visual studio\regex\regex\Game.cpp(14,54): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Strutul\Desktop\visual studio\regex\regex\Game.cpp(14,33): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  LevelSaveState.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\LevelSaveState.cpp(13,44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\Strutul\Desktop\visual studio\regex\regex\LevelSaveState.cpp(13,36): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  Node.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\Node.cpp(96,13): warning C4244: 'return': conversion from 'double' to 'const float', possible loss of data
+  NodeCreationComp.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\NodeCreationComp.cpp(24,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Strutul\Desktop\visual studio\regex\regex\NodeCreationComp.cpp(27,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Strutul\Desktop\visual studio\regex\regex\NodeCreationComp.cpp(30,31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Strutul\Desktop\visual studio\regex\regex\NodeCreationComp.cpp(30,25): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+  NodeEditorState.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\NodeEditorState.cpp(44,65): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  Transition.cpp
+  TransitionCreationComp.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\TransitionCreationComp.cpp(10,20): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  regex.vcxproj -> C:\Users\Strutul\Desktop\visual studio\regex\Debug\regex.exe
