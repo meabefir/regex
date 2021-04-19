@@ -13,8 +13,12 @@ NodeCreationComp::~NodeCreationComp()
 
 void NodeCreationComp::createNode(sf::Vector2f pos)
 {
-	this->nodes->push_back(new Node(this->editor, this->editor->getFont(), pos,
-		std::to_string(this->nodeId++), sf::Color(0, 255, 0, 255)));
+	Node* new_node = new Node(this->editor, this->editor->getFont(), pos,
+		std::to_string(this->nodeId++));
+	this->nodes->push_back(new_node);
+
+	if (this->editor->getStartNode() == nullptr)
+		new_node->toggleStart();
 }
 
 float NodeCreationComp::getClosestNodeDistance()
@@ -44,7 +48,7 @@ Node* NodeCreationComp::attemptNodeCreation()
 	if (this->getClosestNodeDistance() >= this->radius * 2)
 	{
 		Node* new_node = new Node(this->editor, this->editor->getFont(), Mouse::mousePosView,
-			std::to_string(this->nodeId++), sf::Color(0, 255, 0, 255));
+			std::to_string(this->nodeId++));
 
 		this->nodes->push_back(new_node);
 		return new_node;

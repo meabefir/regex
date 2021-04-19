@@ -93,7 +93,7 @@ void TransitionEditorState::ok()
     if (this->text == "")
         this->setText("e");
     this->endState();
-    Mouse::freezeMouse(.2f);
+    Mouse::freezeMouse(.4f);
 }
 
 void TransitionEditorState::cancel()
@@ -102,7 +102,7 @@ void TransitionEditorState::cancel()
     if (this->text == "")
         this->transition->node1->removeTransition(this->transition);
     this->endState();
-    Mouse::freezeMouse(.2f);
+    Mouse::freezeMouse(.4f);
 }
 
 void TransitionEditorState::handleEvents(sf::Event e)

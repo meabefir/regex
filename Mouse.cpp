@@ -71,8 +71,9 @@ void Mouse::update(sf::RenderWindow* window)
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
+		if (Mouse::pressed == false)
+			Mouse::timeSinceMousePessedClock.restart();
 		Mouse::pressed = true;
-		Mouse::timeSinceMousePessedClock.restart();
 	}
 	else
 	{

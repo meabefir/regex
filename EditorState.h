@@ -2,6 +2,7 @@
 #include "State.h"
 #include "Mouse.h"
 
+class NodeEditorState;
 class NodeCreationComponent;
 
 class EditorState :
@@ -30,6 +31,7 @@ public:
     Node* getHoverNode();
     std::unordered_map<std::string, Component*>* getComponents();
     int getNodeId();
+    Node* getStartNode();
 
     // initializers
     void initFont();

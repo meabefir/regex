@@ -5,6 +5,7 @@
 #include "AppData.h"
 #include "MenuState.h"
 #include "Transition.h"
+#include "NodeEditorState.h"
 
 EditorState::EditorState(sf::RenderWindow* window, std::vector<State*>* states):
 	State(window, states), radius(50), interactingWithNode(nullptr), hoveringNode(nullptr)
@@ -232,6 +233,15 @@ void EditorState::activateAll()
 		if (this->sleepingComponents.find(comp.first) != this->sleepingComponents.end())
 			this->sleepingComponents.erase(comp.first);
 	}
+}
+
+Node* EditorState::getStartNode()
+{
+	std::cout << " HERE\n";
+	for (Node* np :this->nodes)
+		if (np->isStartNode())
+			return np;
+	return nullptr;
 }
 
 void EditorState::handleEvents(sf::Event e)

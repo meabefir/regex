@@ -21,18 +21,24 @@ private:
 	bool mouseClicked;
 	bool active;
 
-	sf::Color activeColor;
-	sf::Color defaultColor;
+	bool isStartingNode;
+	bool isFinalNode;
+
+	static sf::Color defaultNodeColor;
+	static sf::Color startNodeColor;
+	static sf::Color finalNodeColor;
+	static sf::Color startFinalNodeColor;
+	static sf::Color activeColor;
+
 	float radius;
 
 	EditorState* editor;
 
 public:
-	Node(EditorState* editor, sf::Font*, sf::Vector2f pos, std::string name = "",
-					sf::Color fill_color = sf::Color::Black, 
+	Node(EditorState* editor, sf::Font*, sf::Vector2f pos, std::string name = "", 
 					const float radius = AppData::nodeRadius, const float outlineThick = 4.f);
 	Node(EditorState* editor, sf::Font*, sf::Vector2f pos, std::string id, std::string name,
-		sf::Color fill_color = sf::Color::Green, const float radius = AppData::nodeRadius,
+		const float radius = AppData::nodeRadius,
 		const float outlineThick = 4.f);
 	~Node();
 
@@ -48,8 +54,13 @@ public:
 	std::string getId();
 	void setName(std::string);
 	std::vector<Transition*>* getTransitions();
+	bool isStartNode();
 
 	const float getDistToVector(const sf::Vector2f&);
+
+	void toggleFinal();
+	void toggleStart(bool self = false);
+	sf::Color getCurrentColor();
 
 	void setText(std::string);
 	void openEditMode();

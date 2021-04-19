@@ -2,7 +2,7 @@
 #include "AppData.h"
 #include "EditorState.h"
 
-NodeEditorState::NodeEditorState(sf::RenderWindow* window, std::vector<State*>* states, Node* node, EditorState* editor):
+NodeEditorState ::NodeEditorState(sf::RenderWindow* window, std::vector<State*>* states, Node* node, EditorState* editor):
 	State(window, states), node(node), editor(editor)
 {
 	this->init();
@@ -62,6 +62,18 @@ void NodeEditorState::init()
         (float)window_size.y * 3.f / 4.f,
         (float)button_size.x, (float)button_size.y,
         this->font, "OK", sf::Color::Blue, sf::Color::Green, sf::Color::Red);
+
+    button_size = { 150,70 };
+    distance_between = 75;
+    this->buttons["START"] = new Button((float)window_size.x / 2 - button_size.x - distance_between,
+        (float)window_size.y * 3.f / 4.f - button_size.y - 10,
+        (float)button_size.x, (float)button_size.y,
+        this->font, "START", sf::Color::Blue, sf::Color::Green, sf::Color::Red);
+    this->buttons["FINAL"] = new Button((float)window_size.x / 2 + distance_between,
+        (float)window_size.y * 3.f / 4.f - button_size.y - 10,
+        (float)button_size.x, (float)button_size.y,
+        this->font, "FINAL", sf::Color::Blue, sf::Color::Green, sf::Color::Red);
+
 }
 
 void NodeEditorState::initFont()
@@ -90,13 +102,13 @@ void NodeEditorState::ok()
     if (this->text == "")
         this->setText("lul");
     this->endState();
-    Mouse::freezeMouse(.2f);
+    Mouse::freezeMouse(.4f);
 }
 
 void NodeEditorState::cancel()
 {
     this->endState();
-    Mouse::freezeMouse(.2f);
+    Mouse::freezeMouse(.4f);
 }
 
 void NodeEditorState::handleEvents(sf::Event e)
@@ -135,17 +147,44 @@ void NodeEditorState::updateInput(const float& dt)
 void NodeEditorState::update(const float& dt)
 {
     for (auto& per : this->buttons)
+    {
         per.second->update(Mouse::mousePosView);
 
-    // check if buttons are pressed
-    if (this->buttons["OK"]->isPressed())
-    {
-        this->ok();
+        if (per.second->isPressed())
+        {
+            if (per.first == "OK")
+                this->ok();
+            else if (per.first == "CANCEL")
+                this->cancel();
+            else if (this->buttons["FINAL"]->isPressed())
+            {
+                this->node->toggleFinal();
+                this->cancel();
+                return;
+            }
+            else if (this->buttons["START"]->isPressed())
+            {
+                EditorState* ep = nullptr;
+                for (auto& sp : *this->states)
+                {
+                    ep = dynamic_cast<EditorState*>(sp);
+                    if (ep != nullptr)
+                        break;
+                }
+                Node* start_node = ep->getStartNode();
+                if (start_node != this->node)
+                {
+                    this->node->toggleStart();
+                    this->cancel();
+                    return;
+                }
+                else
+                    this->cancel();
+            }
+        }
     }
-    if (this->buttons["CANCEL"]->isPressed())
-    {
-        this->cancel();
-    }
+
+   
 }
 
 void NodeEditorState::draw(sf::RenderTarget* target)

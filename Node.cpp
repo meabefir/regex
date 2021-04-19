@@ -4,18 +4,23 @@
 #include "AppData.h"
 #include "NodeEditorState.h"
 
+sf::Color Node::defaultNodeColor = sf::Color::Green;
+sf::Color Node::startNodeColor = sf::Color::Red;
+sf::Color Node::finalNodeColor = sf::Color::Blue;
+sf::Color Node::startFinalNodeColor = sf::Color::Magenta;
+sf::Color Node::activeColor = sf::Color::Yellow;
+
 Node::Node(EditorState* editor, sf::Font* font, sf::Vector2f pos,
-			std::string name, sf::Color fill_color, const float radius, const float outlineThick):
+			std::string name, const float radius, const float outlineThick):
 	editor(editor), radius(radius), id(name)
 {
-	this->defaultColor = fill_color;
 	this->initVariables();
 
 	// shape stuff
 	this->shape.setPosition(pos);
 	this->shape.setRadius(radius - outlineThick);
 	this->shape.setOutlineColor(sf::Color::Black);
-	this->shape.setFillColor(fill_color);
+	this->shape.setFillColor(Node::defaultNodeColor);
 	this->shape.setOutlineThickness(outlineThick);
 	this->shape.setOrigin(sf::Vector2f(radius - outlineThick, radius - outlineThick));
 
@@ -35,17 +40,16 @@ Node::Node(EditorState* editor, sf::Font* font, sf::Vector2f pos,
 }
 
 Node::Node(EditorState* editor, sf::Font* font, sf::Vector2f pos, std::string id, std::string name,
-		sf::Color fill_color, const float radius, const float outlineThick):
+		const float radius, const float outlineThick):
 	editor(editor), radius(radius), id(id), name(name)
 {
-	this->defaultColor = fill_color;
 	this->initVariables();
 
 	// shape stuff
 	this->shape.setPosition(pos);
 	this->shape.setRadius(radius - outlineThick);
 	this->shape.setOutlineColor(sf::Color::Black);
-	this->shape.setFillColor(fill_color);
+	this->shape.setFillColor(Node::defaultNodeColor);
 	this->shape.setOutlineThickness(outlineThick);
 	this->shape.setOrigin(sf::Vector2f(radius - outlineThick, radius - outlineThick));
 
@@ -79,7 +83,8 @@ void Node::initVariables()
 	this->active = false;
 	this->mouseOver = false;
 	this->mouseClicked = false;
-	this->activeColor = sf::Color(255,0,0,255);
+	this->isStartingNode = false;
+	this->isFinalNode = false;
 }
 
 const bool Node::getMouseOver()
@@ -130,9 +135,78 @@ std::vector<Transition*>* Node::getTransitions()
 	return &this->transitions;
 }
 
+bool Node::isStartNode()
+{
+	return this->isStartingNode;
+}
+
 const float Node::getDistToVector(const sf::Vector2f& vec)
 {
 	return sqrt(pow(this->shape.getPosition().x - vec.x, 2) + pow(this->shape.getPosition().y - vec.y, 2));
+}
+
+void Node::toggleFinal()
+{
+	this->isFinalNode = !this->isFinalNode;
+	if (this->isFinalNode)
+	{
+		if (this->isStartingNode)
+			this->shape.setFillColor(Node::startFinalNodeColor);
+		else
+			this->shape.setFillColor(Node::finalNodeColor);
+	}
+	else
+	{
+		if (this->isStartingNode)
+			this->shape.setFillColor(Node::startNodeColor);
+		else
+			this->shape.setFillColor(Node::defaultNodeColor);
+	}
+}
+
+void Node::toggleStart(bool self)
+{
+	if (self == true)
+	{
+		this->isStartingNode = false;
+		if (this->isFinalNode)
+			this->shape.setFillColor(Node::finalNodeColor);
+		else
+			this->shape.setFillColor(Node::defaultNodeColor);
+		return;
+	}
+
+	Node* startNode = this->editor->getStartNode();
+	if (startNode != nullptr)
+	{
+		if (startNode != this)
+		{
+			startNode->toggleStart(true);
+			this->isStartingNode = true;
+			this->shape.setFillColor(Node::startNodeColor);
+		}
+		else
+		{
+			this->isStartingNode = false;
+			this->shape.setFillColor(Node::startNodeColor);
+		}
+	}
+	else if (startNode == nullptr)
+	{
+		this->isStartingNode = true;
+		this->shape.setFillColor(Node::startNodeColor);
+	}
+}
+
+sf::Color Node::getCurrentColor()
+{
+	if (this->isFinalNode && this->isStartingNode)
+		return Node::startFinalNodeColor;
+	if (this->isFinalNode)
+		return Node::finalNodeColor;
+	if (this->isStartingNode)
+		return Node::startNodeColor;
+	return Node::defaultNodeColor;
 }
 
 void Node::setText(std::string str)
@@ -248,7 +322,7 @@ void Node::checkForInteraction()
 	{
 		this->editor->interactingWithNode = nullptr;
 		this->active = false;
-		this->shape.setFillColor(this->defaultColor);
+		this->shape.setFillColor(this->getCurrentColor());
 	}
 }
 
