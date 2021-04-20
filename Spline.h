@@ -27,6 +27,8 @@ protected:
 
 	float absDist;
 	float offset;
+	float offsetScale;
+	float minOffset;
 
 	sf::VertexArray vertexArray;
 	ArrowTip tip;
@@ -39,6 +41,7 @@ public:
 	virtual void updateSplinePoints();
 
 	virtual void udpateTextPos(bool = true);
+	virtual void setVertexColor(sf::Color);
 
 	virtual sf::Vector2f getSplinePoint(float x);
 

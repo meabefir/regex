@@ -21,6 +21,9 @@ public:
 
     Node* attemptNodeCreation();
 
+    void setId(int);
+    void resetId();
+
     void update();
 };
 

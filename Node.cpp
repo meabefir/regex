@@ -140,6 +140,11 @@ bool Node::isStartNode()
 	return this->isStartingNode;
 }
 
+bool Node::isFinalNodeFunc()
+{
+	return this->isFinalNode;
+}
+
 const float Node::getDistToVector(const sf::Vector2f& vec)
 {
 	return sqrt(pow(this->shape.getPosition().x - vec.x, 2) + pow(this->shape.getPosition().y - vec.y, 2));
@@ -169,10 +174,7 @@ void Node::toggleStart(bool self)
 	if (self == true)
 	{
 		this->isStartingNode = false;
-		if (this->isFinalNode)
-			this->shape.setFillColor(Node::finalNodeColor);
-		else
-			this->shape.setFillColor(Node::defaultNodeColor);
+		this->shape.setFillColor(this->getCurrentColor());
 		return;
 	}
 
@@ -183,19 +185,17 @@ void Node::toggleStart(bool self)
 		{
 			startNode->toggleStart(true);
 			this->isStartingNode = true;
-			this->shape.setFillColor(Node::startNodeColor);
 		}
 		else
 		{
 			this->isStartingNode = false;
-			this->shape.setFillColor(Node::startNodeColor);
 		}
 	}
 	else if (startNode == nullptr)
 	{
 		this->isStartingNode = true;
-		this->shape.setFillColor(Node::startNodeColor);
 	}
+	this->shape.setFillColor(this->getCurrentColor());
 }
 
 sf::Color Node::getCurrentColor()

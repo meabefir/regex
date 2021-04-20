@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="AppData.cpp" />
     <ClCompile Include="ArrowTip.cpp" />
+    <ClCompile Include="Automata.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EditorState.cpp" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="AppData.h" />
     <ClInclude Include="ArrowTip.h" />
+    <ClInclude Include="Automata.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="EditorState.h" />

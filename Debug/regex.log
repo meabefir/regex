@@ -1,3 +1,35 @@
-﻿  Node.cpp
-C:\Users\Strutul\Desktop\visual studio\regex\regex\Node.cpp(145,13): warning C4244: 'return': conversion from 'double' to 'const float', possible loss of data
+﻿  ArrowTip.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\ArrowTip.cpp(18,20): warning C4018: '<': signed/unsigned mismatch
+  Automata.cpp
+  EditorState.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\EditorState.cpp(155,72): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Strutul\Desktop\visual studio\regex\regex\EditorState.cpp(155,65): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Node.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\Node.cpp(150,13): warning C4244: 'return': conversion from 'double' to 'const float', possible loss of data
+  Spline.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\Spline.cpp(24,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Strutul\Desktop\visual studio\regex\regex\Spline.cpp(119,18): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\Strutul\Desktop\visual studio\regex\regex\Spline.cpp(152,20): warning C4018: '<': signed/unsigned mismatch
+  SplineSelf.cpp
+  Transition.cpp
+  TransitionEditorState.cpp
+C:\Users\Strutul\Desktop\visual studio\regex\regex\TransitionEditorState.cpp(47,65): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  Generating Code...
+C:\Users\Strutul\Desktop\visual studio\regex\regex\EditorState.cpp(246): warning C4715: 'EditorState::getNodeFromId': not all control paths return a value
   regex.vcxproj -> C:\Users\Strutul\Desktop\visual studio\regex\Debug\regex.exe

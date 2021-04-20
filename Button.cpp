@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "Mouse.h"
 
 Button::Button(float x, float y, float width, float height,
 	sf::Font* font, std::string text,
@@ -58,7 +59,7 @@ void Button::update(const sf::Vector2f mousePos)
 		this->buttonState = BTN_ACTIVE;
 
 		// pressed
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (Mouse::stillClick)
 		{
 			this->buttonState = BTN_PRESSED;
 		}

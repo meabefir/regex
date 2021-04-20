@@ -15,6 +15,8 @@ public:
 	ArrowTip(float size = 20.f);
 	~ArrowTip();
 
+	void setVertexColor(sf::Color);
+
 	void update(sf::Vector2f, sf::Vector2f);
 	void draw(sf::RenderTarget*);
 };

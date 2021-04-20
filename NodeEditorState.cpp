@@ -113,6 +113,12 @@ void NodeEditorState::cancel()
 
 void NodeEditorState::handleEvents(sf::Event e)
 {
+    if (e.type == sf::Event::KeyPressed)
+        if (e.key.code == sf::Keyboard::Key::Escape)
+        {
+            this->cancel();
+            return;
+        }
     if (e.type == sf::Event::TextEntered)
     {
         if (e.text.unicode == 8)
@@ -130,6 +136,8 @@ void NodeEditorState::handleEvents(sf::Event e)
         else
         {
             //std::cout << e.text.unicode << '\n';
+            if (e.text.unicode == 27)
+                return;
             if (e.text.unicode < 128 && this->text.size() < 3) {
                 if (e.text.unicode == sf::Keyboard::Key::Space)
                     return;
@@ -176,7 +184,6 @@ void NodeEditorState::update(const float& dt)
                 {
                     this->node->toggleStart();
                     this->cancel();
-                    return;
                 }
                 else
                     this->cancel();

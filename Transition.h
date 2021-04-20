@@ -7,6 +7,7 @@
 class Node;
 class EditorState;
 class TransitionEditorState;
+class Automata;
 
 class Transition
 {
@@ -48,4 +49,5 @@ public:
 	friend class Node;
 	friend class TransitionEditorState;
 	friend class Spline;
+	friend class Automata;
 };

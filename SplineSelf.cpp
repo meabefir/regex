@@ -5,6 +5,8 @@
 SplineSelf::SplineSelf(Transition* transition, Node* from, Node* to, sf::Text* text):
 	Spline(transition, from, to, text)
 {
+
+	offset = 400.f;
 	this->updateAnchorPoints();
 }
 

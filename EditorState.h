@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include "Mouse.h"
+#include <stdlib.h>
 
 class NodeEditorState;
 class NodeCreationComponent;
@@ -16,8 +17,6 @@ private:
     Node* interactingWithNode;
     Node* hoveringNode;
 
-    static int nodeId;
-
 public:
     EditorState(sf::RenderWindow* window, std::vector<State*>* states);
     ~EditorState();
@@ -30,7 +29,6 @@ public:
     // getter
     Node* getHoverNode();
     std::unordered_map<std::string, Component*>* getComponents();
-    int getNodeId();
     Node* getStartNode();
 
     // initializers
@@ -38,6 +36,8 @@ public:
     void initComponents();
 
     void reset();
+
+    void buildAutomata();
 
     // components
     void deactivateAllBut(std::string);
@@ -50,6 +50,9 @@ public:
 
     void drawNodes(sf::RenderTarget* target);
     void interactionStarted(Node* node);
+
+    // testing
+    void shuffleNodes();
 
     friend class Node;
 };

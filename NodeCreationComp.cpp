@@ -57,6 +57,16 @@ Node* NodeCreationComp::attemptNodeCreation()
 	return nullptr;
 }
 
+void NodeCreationComp::setId(int i)
+{
+	this->nodeId = i;
+}
+
+void NodeCreationComp::resetId()
+{
+	this->nodeId = 0;
+}
+
 void NodeCreationComp::update()
 {
 	if (Mouse::stillClick)

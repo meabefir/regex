@@ -18,7 +18,7 @@ LevelLoadState::LevelLoadState(sf::RenderWindow* window, std::vector<State*>* st
 	whiteBox.setPosition(sf::Vector2f(window_size.x / 2.f - size.x / 2.f, window_size.y / 2.f - size.y / 2.f));
 
 	// get file names from folder and create buttons
-	sf::Vector2f sizef(200.f, 75.f);
+	sf::Vector2f sizef(300.f, 75.f);
 	int y_start = whiteBox.getPosition().y + 70.f;
 	int i = 0;
 	std::string path = "./Levels";

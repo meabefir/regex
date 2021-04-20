@@ -5,6 +5,7 @@
 
 class Transition;
 class EditorState;
+class Automata;
 
 class Node
 {
@@ -55,6 +56,7 @@ public:
 	void setName(std::string);
 	std::vector<Transition*>* getTransitions();
 	bool isStartNode();
+	bool isFinalNodeFunc();
 
 	const float getDistToVector(const sf::Vector2f&);
 
@@ -76,5 +78,7 @@ public:
 	void update();
 	void draw(sf::RenderTarget* target);
 	void drawTransitions(sf::RenderTarget*);
+
+	friend class Automata;
 };
 

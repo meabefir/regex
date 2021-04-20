@@ -5,11 +5,17 @@
 #include "Helper.h"
 #include "Transition.h"
 
-Spline::Spline(Transition* transition, Node* from, Node* to, sf::Text* text_render):
-	transition(transition), from(from), to(to), textRender(text_render), visibleCharacters(10)
+Spline::Spline(Transition* transition, Node* from, Node* to, sf::Text* text_render) :
+	transition(transition), from(from), to(to), textRender(text_render), visibleCharacters(10),
+	offsetScale(10.f), minOffset(150.f)
 {
-	absDist = 0.f;
-	offset = 400.f;
+	absDist = Helper::VectorDistance(from->getShape().getPosition(), to->getShape().getPosition());
+
+	// we want fixed offset for self splines
+	if (dynamic_cast<SplineSelf*>(this) == nullptr)
+		offset = std::max(minOffset, absDist / offsetScale);
+	else
+		offset = 3000.f;
 
 	precision = 21;
 	step = 1.f / precision;
@@ -32,6 +38,8 @@ void Spline::updateAnchorPoints()
 	this->p3 = this->to->getShape().getPosition();
 
 	absDist = Helper::VectorLength(p3 - p0);
+	if (dynamic_cast<SplineSelf*>(this) == nullptr)
+		offset = std::max(minOffset, absDist / offsetScale);
 
 	// calc p1 and p2 based on p0 and p3
 	// make new offset vector
@@ -138,13 +146,26 @@ void Spline::udpateTextPos(bool applyLimit)
 	this->textRender->setPosition(mid_pos.x - text_render_size.x / 2.f, mid_pos.y - 15.f);
 }
 
+void Spline::setVertexColor(sf::Color c)
+{
+	this->tip.setVertexColor(c);
+	for (int i = 0; i < this->vertexArray.getVertexCount(); i++)
+		this->vertexArray[i].color = c;
+}
+
 void Spline::draw(sf::RenderTarget* target)
 {	
 	// show or hide full text
 	if (Helper::mouseInBox(this->textRender->getGlobalBounds()))
+	{
 		this->udpateTextPos(false);
+		this->setVertexColor(sf::Color::Red);
+	}
 	else if (this->textLimit == false)
+	{
 		this->udpateTextPos(true);
+		this->setVertexColor(sf::Color::Black);
+	}
 
 	// check if pos update is needed
 	if (this->from->isActive() || this->to->isActive())

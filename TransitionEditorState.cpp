@@ -130,9 +130,11 @@ void TransitionEditorState::handleEvents(sf::Event e)
         else
         {
             if (e.text.unicode == 27)
+            {
                 return;
+            }
             if (e.text.unicode < 128) {
-                if (e.text.unicode == sf::Keyboard::Key::Space)
+                if (e.text.unicode == 32)
                     return;
                 this->setText(this->text + static_cast<char>(e.text.unicode));
             }

@@ -2,6 +2,7 @@
 #include "Mouse.h"
 #include "LevelSaveState.h"
 #include "LevelLoadState.h"
+#include "EditorState.h"
 
 MenuState::MenuState(sf::RenderWindow* window, std::vector<State*>* states):
 	State(window, states), whiteBox()
@@ -19,13 +20,20 @@ MenuState::MenuState(sf::RenderWindow* window, std::vector<State*>* states):
 	this->whiteBox.setPosition(margin, margin);
 
 	// add buttons
-	size = sf::Vector2f(150.f, 75.f);
+	size = sf::Vector2f(150.f, 85.f);
 	this->buttons["LOAD"] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - size.x / 2.f,
-							75.f, size.x, size.y, this->font, "LOAD",
+							50.f, size.x, size.y, this->font, "LOAD",
 							sf::Color::Green, sf::Color::Blue, sf::Color::Red);
 	this->buttons["SAVE"] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - size.x / 2.f,
-							200.f, size.x, size.y, this->font, "SAVE",
+							150.f, size.x, size.y, this->font, "SAVE",
 							sf::Color::Green, sf::Color::Blue, sf::Color::Red);
+	this->buttons["CLEAR"] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - size.x / 2.f,
+							250.f, size.x, size.y, this->font, "CLEAR",
+							sf::Color::Green, sf::Color::Blue, sf::Color::Red);
+
+	this->buttons["REGEX"] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - size.x / 2.f,
+		this->whiteBox.getSize().y + this->whiteBox.getPosition().y - size.y - 10.f, size.x, size.y, this->font, "REGEX",
+		sf::Color::Green, sf::Color::Blue, sf::Color::Red);
 }
 
 MenuState::~MenuState()
@@ -67,6 +75,32 @@ void MenuState::update(const float& dt)
 	else if (this->buttons["SAVE"]->isPressed())
 	{
 		this->states->push_back(new LevelSaveState(this->window, this->states));
+	}
+	else if (this->buttons["CLEAR"]->isPressed())
+	{
+		//find editor
+		for (auto& state : *this->states)
+		{
+			EditorState* ep = dynamic_cast<EditorState*>(state);
+			if (ep != nullptr)
+			{
+				ep->clearNodes();
+				return;
+			}
+		}
+	}
+	else if (this->buttons["REGEX"]->isPressed())
+	{
+		//find editor
+		for (auto& state : *this->states)
+		{
+			EditorState* ep = dynamic_cast<EditorState*>(state);
+			if (ep != nullptr)
+			{
+				ep->buildAutomata();
+				return;
+			}
+		}
 	}
 }
 

@@ -13,6 +13,12 @@ ArrowTip::~ArrowTip()
 
 }
 
+void ArrowTip::setVertexColor(sf::Color c)
+{
+	for (int i = 0; i < this->vertexArray.getVertexCount(); i++)
+		this->vertexArray[i].color = c;
+}
+
 void ArrowTip::update(sf::Vector2f v1, sf::Vector2f v2)
 {
 	p1 = v1;

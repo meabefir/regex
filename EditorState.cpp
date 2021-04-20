@@ -6,6 +6,7 @@
 #include "MenuState.h"
 #include "Transition.h"
 #include "NodeEditorState.h"
+#include "Automata.h"
 
 EditorState::EditorState(sf::RenderWindow* window, std::vector<State*>* states):
 	State(window, states), radius(50), interactingWithNode(nullptr), hoveringNode(nullptr)
@@ -24,8 +25,6 @@ EditorState::~EditorState()
 	for (auto& per : this->components)
 		delete per.second;
 }
-
-int EditorState::nodeId = 0;
 
 void EditorState::initFont()
 {
@@ -51,8 +50,12 @@ void EditorState::saveLevel(std::string name)
 	// write nr of nodes
 	g << this->nodes.size() << '\n';
 	// write pos.x pos.y id and name for all nodes
+	int nr_final = 0;
 	for (auto& node : this->nodes)
 	{
+		// increment nr of final nodes
+		if (node->isFinalNodeFunc())
+			nr_final++;
 		g << node->getShape().getPosition().x << ' ' << node->getShape().getPosition().y << ' ' <<
 			node->getId() << ' ' << node->getName() << '\n';
 	}
@@ -73,6 +76,28 @@ void EditorState::saveLevel(std::string name)
 	for (auto& trans : transitions)
 	{
 		g << trans->getNode1()->getId() << ' ' << trans->getNode2()->getId() << ' ' << trans->getText() << '\n';
+	}
+
+	// write start node id
+	for (auto& node : this->nodes)
+	{
+		if (node->isStartNode())
+		{
+			g << node->getId() << '\n';
+			break;
+		}
+	}
+
+	// write nr of final nodes
+	g << nr_final << '\n';
+	
+	// write final nodes ids
+	for (auto& node : this->nodes)
+	{
+		if (node->isFinalNodeFunc())
+		{
+			g << node->getId() << ' ';
+		}
 	}
 
 	g.close();
@@ -143,14 +168,34 @@ void EditorState::loadLevel(std::string name)
 		node1->addTransitionToNode(node2, text);
 	}
 
+	// make start node
+	std::string start_id;
+	f >> start_id;
+	Node* start_node = this->getNodeFromId(start_id);
+	start_node->toggleStart();
+
+	// make final nodes
+	int nr_finals;
+	f >> nr_finals;
+	for (int i = 0; i < nr_finals; i++)
+	{
+		std::string final_id;
+		f >> final_id;
+		Node* final_node = this->getNodeFromId(final_id);
+		final_node->toggleFinal();
+	}
+
 	f.close();
 	// get max id
-	this->nodeId = 0;
+	int max_node = 0;
 	for (auto& np : this->nodes)
 	{
-		if (np->getId() > std::to_string(this->nodeId))
-			this->nodeId = std::stoi(np->getId());
+		if (std::stoi(np->getId()) > max_node)
+			max_node = std::stoi(np->getId());
 	}
+	// set the max id
+	NodeCreationComp* ncp = dynamic_cast<NodeCreationComp*>(this->components["NODE_CREATION"]);
+	ncp->setId(max_node+1);
 }
 
 void EditorState::draw(sf::RenderTarget* target)
@@ -174,15 +219,23 @@ std::unordered_map<std::string, Component*>* EditorState::getComponents()
 
 void EditorState::clearNodes()
 {
+	/*for (auto& cp : this->components)
+	{
+		NodeCreationComp* ncp = dynamic_cast<NodeCreationComp*>(cp);
+		if (ncp != nullptr)
+		{
+			ncp->resetId();
+			break;
+		}
+	}*/
+
+	NodeCreationComp* ncp = dynamic_cast<NodeCreationComp*>(this->components["NODE_CREATION"]);
+	ncp->resetId();
+
 	for (auto& node : this->nodes)
 		delete node;
 	while (this->nodes.size())
 		this->nodes.pop_back();
-}
-
-int EditorState::getNodeId()
-{
-	return this->nodeId;
 }
 
 Node* EditorState::getNodeFromId(std::string id)
@@ -215,6 +268,21 @@ void EditorState::interactionStarted(Node* node)
 	this->nodes.push_back(node);
 }
 
+void EditorState::shuffleNodes()
+{
+	int max_size = this->nodes.size();
+	for (int i = 0; i < max_size; i++)
+	{
+		int poz1 = rand() % max_size;
+		int poz2 = rand() % max_size;
+
+		Node* aux = nodes[poz1];
+		nodes[poz1] = nodes[poz2];
+		nodes[poz2] = aux;
+	}
+	std::cout << " Shuffled nodes\n";
+}
+
 void EditorState::deactivateAllBut(std::string name)
 {
 	for (auto& comp : this->components)
@@ -237,7 +305,6 @@ void EditorState::activateAll()
 
 Node* EditorState::getStartNode()
 {
-	std::cout << " HERE\n";
 	for (Node* np :this->nodes)
 		if (np->isStartNode())
 			return np;
@@ -251,4 +318,26 @@ void EditorState::handleEvents(sf::Event e)
 		if (e.key.code == sf::Keyboard::Key::Escape)
 			this->states->push_back(new MenuState(this->window, this->states));
 	}
+	if (e.type == sf::Event::KeyReleased)
+		if (e.key.code == sf::Keyboard::Key::S)
+			this->shuffleNodes();
+
+	// uncomment this after you make ui elemets unaffected by panning
+	return;
+	if (e.type == sf::Event::MouseMoved)
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle))
+		{
+			sf::View curr_view = this->window->getView();
+			curr_view.move(-Mouse::relativePos);
+			this->window->setView(curr_view);
+		}
+	}
+}
+
+void EditorState::buildAutomata()
+{
+	Automata au(&this->nodes);
+
+	std::cout << au.getRegex() << '\n';
 }
