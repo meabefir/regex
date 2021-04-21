@@ -22,24 +22,31 @@ LevelLoadState::LevelLoadState(sf::RenderWindow* window, std::vector<State*>* st
 	int y_start = whiteBox.getPosition().y + 70.f;
 	int i = 0;
 	std::string path = "./Levels";
-	for (auto& entry : fs::directory_iterator(path))
+	try
 	{
-		std::stringstream ss;
-		ss << entry.path();
-		std::string s = ss.str();
+		for (auto& entry : fs::directory_iterator(path))
+		{
+			std::stringstream ss;
+			ss << entry.path();
+			std::string s = ss.str();
 
-		std::size_t found = s.find_last_of('\\');
-		s = s.substr(found+1);
-		s = s.substr(0, s.size() - 5);
+			std::size_t found = s.find_last_of('\\');
+			s = s.substr(found+1);
+			s = s.substr(0, s.size() - 5);
 		
 
-		std::string name = s;
+			std::string name = s;
 
-		this->buttons[name] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - sizef.x / 2.f,
-			y_start + i * (sizef.y + 20.f), sizef.x, sizef.y, this->font, name,
-			sf::Color::Green, sf::Color::Blue, sf::Color::Red);
+			this->buttons[name] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - sizef.x / 2.f,
+				y_start + i * (sizef.y + 20.f), sizef.x, sizef.y, this->font, name,
+				sf::Color::Green, sf::Color::Blue, sf::Color::Red);
 
-		i++;
+			i++;
+		}
+	}
+	catch (...)
+	{
+
 	}
 
 	// info text render
@@ -98,8 +105,13 @@ void LevelLoadState::update(const float& dt)
 	}
 }
 
-void LevelLoadState::draw(sf::RenderTarget* target)
+void LevelLoadState::draw(sf::RenderTarget* target, sf::View* UIView)
 {
+	// save the window view
+	sf::View default_view = target->getView();
+	// set the ui view
+	target->setView(*UIView);
+
 	target->draw(whiteBox);
 	target->draw(infoTextRender);
 	target->draw(inputTextRender);
@@ -108,4 +120,6 @@ void LevelLoadState::draw(sf::RenderTarget* target)
 	{
 		per.second->draw(target);
 	}
+	// set back the default view
+	target->setView(default_view);
 }

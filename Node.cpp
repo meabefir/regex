@@ -310,17 +310,17 @@ void Node::removeTransition(Transition* trans)
 
 void Node::checkForInteraction()
 {
-	if (this->mouseOver && this->mouseClicked)
+	if (this->mouseOver && this->mouseClicked && this->editor->getInteractingWith() != this)
 	{
 		this->editor->interactionStarted(this);
 
-		this->editor->interactingWithNode = this;
+		this->editor->setInteractigWith(this);
 		this->active = true;
 		this->shape.setFillColor(this->activeColor);
 	}
 	else if (this->active && !sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
-		this->editor->interactingWithNode = nullptr;
+		this->editor->setInteractigWith(nullptr);
 		this->active = false;
 		this->shape.setFillColor(this->getCurrentColor());
 	}
@@ -340,7 +340,7 @@ void Node::update()
 	// if interacting with this, follow mouse
 	if (this->editor->interactingWithNode == this)
 	{
-		this->shape.move(Mouse::relativePos);
+		this->shape.move(Mouse::relativePos.x, Mouse::relativePos.y);
 		this->text.setPosition(this->shape.getPosition());
 	}
 

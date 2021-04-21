@@ -104,12 +104,21 @@ void MenuState::update(const float& dt)
 	}
 }
 
-void MenuState::draw(sf::RenderTarget* target)
+void MenuState::draw(sf::RenderTarget* target, sf::View* UIView)
 {
+	// save the window view
+	sf::View default_view = target->getView();
+	// set the ui view
+	target->setView(*UIView);
+
+
 	target->draw(whiteBox);
 
 	for (auto& per : this->buttons)
 	{
 		per.second->draw(target);
 	}
+
+	// set back the default view
+	target->setView(default_view);
 }

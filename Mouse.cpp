@@ -3,11 +3,13 @@
 
 sf::Vector2f Mouse::pos = { 0.f, 0.f };
 
-sf::Vector2f Mouse::relativePos = { 0.f, 0.f };
+sf::Vector2f Mouse::relativePos = { 0, 0 };
 
 sf::Vector2f Mouse::movementSinceLastClick = { 0.f, 0.f };
 
 sf::Vector2f Mouse::movementSinceMousePressed = { 0.f, 0.f };
+
+sf::Vector2i Mouse::lastMousePosWindow = {0, 0 };
 
 sf::Vector2i Mouse::mousePosScreen = { 0, 0 };
 
@@ -26,6 +28,8 @@ float Mouse::dClickDuration = .5f;
 float Mouse::clickDuration = .35f;
 
 float Mouse::freezeTime = 0.f;
+
+float Mouse::zoom = 1.f;
 
 bool Mouse::pressed= false;
 
@@ -55,8 +59,9 @@ void Mouse::update(sf::RenderWindow* window)
 	Mouse::resetAll();
 
 	// calc relative pos when mouse is moving
-	Mouse::relativePos = Mouse::mousePosView - Mouse::pos;
-	Mouse::movementSinceLastClick += Mouse::relativePos;
+	Mouse::relativePos = (sf::Vector2f(Mouse::mousePosWindow) - sf::Vector2f(Mouse::lastMousePosWindow)) * zoom;
+	Mouse::lastMousePosWindow = Mouse::mousePosWindow;
+	Mouse::movementSinceLastClick += sf::Vector2f(Mouse::relativePos.x, Mouse::relativePos.y);
 	Mouse::movementSinceMousePressed += sf::Vector2f(abs(Mouse::relativePos.x), abs(Mouse::relativePos.y));;
 	Mouse::pos = Mouse::mousePosView;
 
@@ -116,4 +121,9 @@ void Mouse::freezeMouse(const float time)
 {
 	Mouse::resetAll();
 	Mouse::freezeTime = time;
+}
+
+float Mouse::getZoom()
+{
+	return zoom;
 }

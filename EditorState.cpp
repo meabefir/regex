@@ -7,6 +7,8 @@
 #include "Transition.h"
 #include "NodeEditorState.h"
 #include "Automata.h"
+#include <direct.h>
+#include "NodeRemovalComp.h"
 
 EditorState::EditorState(sf::RenderWindow* window, std::vector<State*>* states):
 	State(window, states), radius(50), interactingWithNode(nullptr), hoveringNode(nullptr)
@@ -35,7 +37,10 @@ void EditorState::initFont()
 void EditorState::initComponents()
 {
 	this->components["NODE_CREATION"] = new NodeCreationComp(this, &this->nodes);
+	this->components["NODE_REMOVAL"] = new NodeRemovalComp(this);
 	this->components["TRANSITION_CREATION"] = new TransitionCreationComp(this);
+
+	this->deactivateComponent("NODE_REMOVAL");
 }
 
 void EditorState::updateInput(const float& dt)
@@ -46,6 +51,12 @@ void EditorState::updateInput(const float& dt)
 void EditorState::saveLevel(std::string name)
 {
 	std::ofstream g("Levels/"+name + ".txt");
+
+	if (!g.is_open())
+	{
+		_mkdir("./Levels");
+		g.open("Levels/" + name + ".txt");
+	}
 
 	// write nr of nodes
 	g << this->nodes.size() << '\n';
@@ -198,7 +209,7 @@ void EditorState::loadLevel(std::string name)
 	ncp->setId(max_node+1);
 }
 
-void EditorState::draw(sf::RenderTarget* target)
+void EditorState::draw(sf::RenderTarget* target, sf::View* UIView)
 {
 	this->drawNodes(target);
 
@@ -207,7 +218,7 @@ void EditorState::draw(sf::RenderTarget* target)
 	{
 		if (this->sleepingComponents.find(per.first) == this->sleepingComponents.end())
 		{
-			per.second->draw(target);
+			per.second->draw(target, UIView);
 		}
 	}
 }
@@ -219,16 +230,6 @@ std::unordered_map<std::string, Component*>* EditorState::getComponents()
 
 void EditorState::clearNodes()
 {
-	/*for (auto& cp : this->components)
-	{
-		NodeCreationComp* ncp = dynamic_cast<NodeCreationComp*>(cp);
-		if (ncp != nullptr)
-		{
-			ncp->resetId();
-			break;
-		}
-	}*/
-
 	NodeCreationComp* ncp = dynamic_cast<NodeCreationComp*>(this->components["NODE_CREATION"]);
 	ncp->resetId();
 
@@ -236,6 +237,46 @@ void EditorState::clearNodes()
 		delete node;
 	while (this->nodes.size())
 		this->nodes.pop_back();
+
+	sf::View window_view(this->window->getView());
+	window_view.reset(sf::FloatRect(0, 0, this->window->getViewport(window_view).width,
+										this->window->getViewport(window_view).height));
+	this->window->setView(window_view);
+}
+
+void EditorState::removeNode(Node* n)
+{
+	bool is_starting_node = false;
+	if (this->getStartNode() == n)
+		is_starting_node = true;
+
+	auto node_it = std::find(nodes.begin(), nodes.end(), n);
+	if (node_it != nodes.end())
+	{	
+		if (this->interactingWithNode == n)
+			this->setInteractigWith(nullptr);
+		this->nodes.erase(node_it);
+		delete n;
+	}
+
+	// change start node if needed
+	if (is_starting_node)
+		if (this->nodes.size())
+			this->nodes[0]->toggleStart();
+
+	// REMOVE TRANSITIONS !!!!!!!!!!!!!!!!!!!
+	for (auto& node : this->nodes)
+	{
+		int i = 0;
+		for (auto& trans : *node->getTransitions())
+		{
+			if (trans->getNode2() == n)
+			{
+				node->removeTransition(trans);
+			}
+			i++;
+		}
+	}
 }
 
 Node* EditorState::getNodeFromId(std::string id)
@@ -294,6 +335,33 @@ void EditorState::deactivateAllBut(std::string name)
 	}
 }
 
+void EditorState::activateAllBut(std::string name)
+{
+	for (auto& comp : this->components)
+	{
+		if (comp.first != name)
+		{
+			this->sleepingComponents.erase(comp.first);
+		}
+	}
+}
+
+void EditorState::deactivateComponent(std::string comp)
+{
+	if (this->components.find(comp) != this->components.end())
+	{
+		this->sleepingComponents[comp] = 1;
+	}
+}
+
+void EditorState::activateComponent(std::string comp)
+{
+	if (this->components.find(comp) != this->components.end())
+	{
+		this->sleepingComponents.erase(comp);
+	}
+}
+
 void EditorState::activateAll()
 {
 	for (auto& comp : this->components)
@@ -311,6 +379,21 @@ Node* EditorState::getStartNode()
 	return nullptr;
 }
 
+void EditorState::setInteractigWith(Node* n)
+{
+	//std::cout << n << '\n';
+	this->interactingWithNode = n;
+	if (n == nullptr)
+		this->deactivateComponent("NODE_REMOVAL");
+	else
+		this->activateComponent("NODE_REMOVAL");
+}
+
+Node* EditorState::getInteractingWith()
+{
+	return this->interactingWithNode;
+}
+
 void EditorState::handleEvents(sf::Event e)
 {
 	if (e.type == sf::Event::KeyPressed)
@@ -323,13 +406,32 @@ void EditorState::handleEvents(sf::Event e)
 			this->shuffleNodes();
 
 	// uncomment this after you make ui elemets unaffected by panning
-	return;
 	if (e.type == sf::Event::MouseMoved)
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle))
 		{
 			sf::View curr_view = this->window->getView();
 			curr_view.move(-Mouse::relativePos);
+			this->window->setView(curr_view);
+		}
+	}
+
+	// if scroll
+	if (e.type == sf::Event::MouseWheelMoved)
+	{
+		// zoom out
+		if (e.mouseWheel.delta == -1 && Mouse::zoom <= 2.f)
+		{
+			sf::View curr_view = this->window->getView();
+			curr_view.zoom(1.1f);
+			Mouse::zoom = Mouse::zoom * 1.1f;
+			this->window->setView(curr_view);
+		}
+		else if (e.mouseWheel.delta == 1 && Mouse::zoom >= .5f) // zoom in
+		{
+			sf::View curr_view = this->window->getView();
+			curr_view.zoom(.9f);
+			Mouse::zoom = Mouse::zoom * .9f;
 			this->window->setView(curr_view);
 		}
 	}

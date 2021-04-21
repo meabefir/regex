@@ -46,6 +46,6 @@ public:
 	virtual void handleEvents(sf::Event);
 	virtual void updateInput(const float& dt) = 0;
 	virtual void update(const float& dt) = 0;
-	virtual void draw(sf::RenderTarget* target = nullptr) = 0;
+	virtual void draw(sf::RenderTarget* target = nullptr, sf::View* UIView = nullptr) = 0;
 };
 

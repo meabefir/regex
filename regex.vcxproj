@@ -162,6 +162,7 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="NodeCreationComp.cpp" />
     <ClCompile Include="NodeEditorState.cpp" />
+    <ClCompile Include="NodeRemovalComp.cpp" />
     <ClCompile Include="regex.cpp" />
     <ClCompile Include="Spline.cpp" />
     <ClCompile Include="SplineSelf.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="NodeCreationComp.h" />
     <ClInclude Include="NodeEditorState.h" />
+    <ClInclude Include="NodeRemovalComp.h" />
     <ClInclude Include="Spline.h" />
     <ClInclude Include="SplineSelf.h" />
     <ClInclude Include="State.h" />

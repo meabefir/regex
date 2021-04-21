@@ -6,6 +6,7 @@ class Game
 private:
     sf::RenderWindow* window;
     sf::View* view;
+    sf::View* UIView;
     sf::Event e;
 
     sf::Clock dtClock;

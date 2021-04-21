@@ -102,13 +102,13 @@ void NodeEditorState::ok()
     if (this->text == "")
         this->setText("lul");
     this->endState();
-    Mouse::freezeMouse(.4f);
+    Mouse::freezeMouse(.2f);
 }
 
 void NodeEditorState::cancel()
 {
     this->endState();
-    Mouse::freezeMouse(.4f);
+    Mouse::freezeMouse(.2f);
 }
 
 void NodeEditorState::handleEvents(sf::Event e)
@@ -194,11 +194,20 @@ void NodeEditorState::update(const float& dt)
    
 }
 
-void NodeEditorState::draw(sf::RenderTarget* target)
+void NodeEditorState::draw(sf::RenderTarget* target, sf::View* UIView)
 {
+    // save the window view
+    sf::View default_view = target->getView();
+    // set the ui view
+    target->setView(*UIView);
+
+
     target->draw(this->whiteBox);
     for (auto& per : this->buttons)
         per.second->draw(target);
     target->draw(this->textRender);
     target->draw(this->infoText);
+
+    // set back the default view
+    target->setView(default_view);
 }

@@ -46,9 +46,10 @@ const bool Button::isPressed() const
 
 //functions 
 
-void Button::update(const sf::Vector2f mousePos)
+void Button::update(const sf::Vector2f m)
 {
 	// update the booleans for hover and pressed
+	sf::Vector2f mousePos(Mouse::mousePosWindow.x, Mouse::mousePosWindow.y);
 
 	// idle
 	this->buttonState = BTN_IDLE;

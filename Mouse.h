@@ -9,10 +9,12 @@ public:
 	static sf::Vector2f relativePos;
 	static sf::Vector2f movementSinceLastClick;
 	static sf::Vector2f movementSinceMousePressed;
+	static sf::Vector2i lastMousePosWindow;
 	static sf::Clock timeSinceMousePessedClock;
 	static sf::Clock dClickClock;
 	static sf::Clock freezeClock;
 	static float freezeTime;
+	static float zoom;
 
 	static sf::Vector2i mousePosScreen;
 	static sf::Vector2i mousePosWindow;
@@ -31,5 +33,7 @@ public:
 	static void updateMousePos(sf::RenderWindow* window);
 	static void update(sf::RenderWindow* window);
 	static void resetAll();
+
+	static float getZoom();
 };
 

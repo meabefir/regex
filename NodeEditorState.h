@@ -35,6 +35,6 @@ public:
 	void handleEvents(sf::Event);
 	void updateInput(const float& dt);
 	void update(const float& dt);
-	void draw(sf::RenderTarget*);
+	void draw(sf::RenderTarget*, sf::View* UIView = nullptr);
 };
 

@@ -4,14 +4,16 @@
 void Game::initWindow()
 {
 	//sf::VideoMode window_bounds = sf::VideoMode::getDesktopMode();
-	sf::VideoMode window_bounds = sf::VideoMode::getDesktopMode();
+	sf::VideoMode window_bounds = sf::VideoMode::getFullscreenModes()[0];
 	window_bounds.width = 1280;
 	window_bounds.height = 720;
-	std::string title = "testing";
-
+	std::string title = "RegeX";
+	
 	this->window = new sf::RenderWindow(window_bounds, title, sf::Style::Close | sf::Style::Titlebar);
 	this->view = new sf::View(sf::Vector2f(window_bounds.width, window_bounds.height) / 2.f,
 						sf::Vector2f(window_bounds.width, window_bounds.height));
+	this->UIView = new sf::View(sf::Vector2f(window_bounds.width, window_bounds.height) / 2.f,
+		sf::Vector2f(window_bounds.width, window_bounds.height));
 	this->window->setView(*this->view);
 	//this->window->setFramerateLimit(120);
 }
@@ -105,7 +107,9 @@ void Game::draw()
 
 	// Render items
 	for (auto& sp : this->states)
-		sp->draw(this->window);
+		sp->draw(this->window, this->UIView);
 
 	this->window->display();
+
+
 }

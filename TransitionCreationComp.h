@@ -23,6 +23,6 @@ public:
     void createTransitionTo(Node*);
 
     void update();
-    void draw(sf::RenderTarget*);
+    void draw(sf::RenderTarget*, sf::View* view);
 };
 

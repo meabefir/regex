@@ -22,7 +22,7 @@ void TransitionCreationComp::createTransitionTo(Node* to_node)
 {
 	this->node->addTransitionToNode(to_node);
 	this->node = nullptr;
-	this->editor->activateAll();
+	this->editor->activateAllBut("NODE_REMOVAL");
 }
 
 void TransitionCreationComp::update()
@@ -54,23 +54,23 @@ void TransitionCreationComp::update()
 			}
 			
 			this->node = nullptr;
-			this->editor->activateAll();
+			this->editor->activateAllBut("NODE_REMOVAL");
 		}
 	}
 	else if (Mouse::doubleClick)
 	{
 		this->node = nullptr;
-		this->editor->activateAll();
+		this->editor->activateAllBut("NODE_REMOVAL");
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 	{
 		this->node = nullptr;
-		this->editor->activateAll();
+		this->editor->activateAllBut("NODE_REMOVAL");
 	}
 }
 
-void TransitionCreationComp::draw(sf::RenderTarget* target)
+void TransitionCreationComp::draw(sf::RenderTarget* target, sf::View* view)
 {
 	if (this->node != nullptr)
 	{
