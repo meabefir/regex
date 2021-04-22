@@ -17,8 +17,8 @@ Transition::Transition(Node* node1, Node* node2, sf::Color color):
 	deleteButton.setOrigin(sf::Vector2f(10.f, 10.f));
 
 	textRender.setFont(*this->editor->getFont());
-	textRender.setCharacterSize(25);
-	textRender.setFillColor(sf::Color::Black);
+	textRender.setCharacterSize(35.f);
+	textRender.setFillColor(sf::Color(233, 196, 106));
 
 
 	std::cout << " new transition between " << node1 << ' ' << node2 << '\n';
@@ -37,9 +37,9 @@ Transition::Transition(Node* node1, Node* node2, std::string text, sf::Color col
 	deleteButton.setOrigin(sf::Vector2f(10.f, 10.f));
 
 	textRender.setFont(*this->editor->getFont());
-	textRender.setCharacterSize(25);
+	textRender.setCharacterSize(35.f);
 	textRender.setString(text);
-	textRender.setFillColor(sf::Color::Black);
+	textRender.setFillColor(sf::Color(233, 196, 106));
 
 
 	std::cout << " new transition between " << node1 << ' ' << node2 << '\n';

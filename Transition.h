@@ -29,8 +29,8 @@ private:
 	sf::CircleShape deleteButton;
 
 public:
-	Transition(Node* node1, Node* node2, sf::Color color = sf::Color::Blue);
-	Transition(Node* node1, Node* node2, std::string text, sf::Color color = sf::Color::Blue);
+	Transition(Node* node1, Node* node2, sf::Color color = sf::Color(233, 196, 106));
+	Transition(Node* node1, Node* node2, std::string text, sf::Color color = sf::Color(233, 196, 106));
 	~Transition();
 
 	// setter getter

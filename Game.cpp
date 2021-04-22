@@ -103,7 +103,7 @@ void Game::update()
 
 void Game::draw()
 {
-	this->window->clear(sf::Color::White);
+	this->window->clear(sf::Color(24, 44, 52));
 
 	// Render items
 	for (auto& sp : this->states)

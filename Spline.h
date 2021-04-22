@@ -13,6 +13,9 @@ protected:
 	sf::Vector2f p2;
 	sf::Vector2f p3;
 
+	sf::Color defaultColor;
+	sf::Color highlightColor;
+
 	Transition* transition;
 
 	sf::Text* textRender;

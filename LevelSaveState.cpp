@@ -17,7 +17,7 @@ LevelSaveState::LevelSaveState(sf::RenderWindow* window, std::vector<State*>* st
 	sf::Vector2f sizef(150.f, 75.f);
 	this->buttons["SAVE"] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - sizef.x / 2.f,
 		whiteBox.getPosition().y + this->whiteBox.getSize().y / 2.f - sizef.y / 2.f, sizef.x, sizef.y, this->font, "SAVE",
-		sf::Color::Green, sf::Color::Blue, sf::Color::Red);
+		sf::Color(38, 70, 83), sf::Color(42, 157, 143), sf::Color(233, 196, 106));
 
 	// info text render
 	infoTextRender.setFont(*this->font);

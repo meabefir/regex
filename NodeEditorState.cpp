@@ -30,7 +30,7 @@ void NodeEditorState::init()
 
     // white box
     sf::Vector2f size(500, 260);
-    this->whiteBox.setFillColor(sf::Color(255, 255, 255, 200));
+    this->whiteBox.setFillColor(sf::Color(0, 0, 0, 170));
     this->whiteBox.setOutlineColor(sf::Color::Black);
     this->whiteBox.setOutlineThickness(3);
     this->whiteBox.setSize(size);
@@ -40,7 +40,9 @@ void NodeEditorState::init()
     this->text = this->node->getName();
     this->textRender.setFont(*this->font);
     this->textRender.setCharacterSize(50);
-    this->textRender.setFillColor(sf::Color::Black);
+    this->textRender.setFillColor(sf::Color::White);
+    this->textRender.setOutlineThickness(2.f);
+    this->textRender.setOutlineColor(sf::Color::Black);
     this->textPosition = sf::Vector2f(this->window->getSize().x / 2, this->window->getSize().y * 3.f / 4.f - 55.f);
 
     this->setText(text);
@@ -48,7 +50,9 @@ void NodeEditorState::init()
     // info text
     this->infoText.setFont(*this->font);
     this->infoText.setCharacterSize(40);
-    this->infoText.setFillColor(sf::Color::Black);
+    this->infoText.setFillColor(sf::Color::White);
+    this->infoText.setOutlineThickness(2.f);
+    this->infoText.setOutlineColor(sf::Color::Black);
     this->infoText.setString("Type a new name for the node");
     this->recenterText(this->infoText, this->textPosition + sf::Vector2f(0, 150));
 
@@ -57,22 +61,22 @@ void NodeEditorState::init()
     this->buttons["CANCEL"] = new Button((float)window_size.x / 2 - button_size.x - distance_between,
         (float)window_size.y * 3.f / 4.f,
         (float)button_size.x, (float)button_size.y,
-        this->font, "CANCEL", sf::Color::Blue, sf::Color::Green, sf::Color::Red);
+        this->font, "CANCEL", sf::Color(38, 70, 83), sf::Color(42, 157, 143), sf::Color(233, 196, 106));
     this->buttons["OK"] = new Button((float)window_size.x / 2 + distance_between,
         (float)window_size.y * 3.f / 4.f,
         (float)button_size.x, (float)button_size.y,
-        this->font, "OK", sf::Color::Blue, sf::Color::Green, sf::Color::Red);
+        this->font, "OK", sf::Color(38, 70, 83), sf::Color(42, 157, 143), sf::Color(233, 196, 106));
 
     button_size = { 150,70 };
     distance_between = 75;
     this->buttons["START"] = new Button((float)window_size.x / 2 - button_size.x - distance_between,
         (float)window_size.y * 3.f / 4.f - button_size.y - 10,
         (float)button_size.x, (float)button_size.y,
-        this->font, "START", sf::Color::Blue, sf::Color::Green, sf::Color::Red);
+        this->font, "START", sf::Color(38, 70, 83), sf::Color(42, 157, 143), sf::Color(233, 196, 106));
     this->buttons["FINAL"] = new Button((float)window_size.x / 2 + distance_between,
         (float)window_size.y * 3.f / 4.f - button_size.y - 10,
         (float)button_size.x, (float)button_size.y,
-        this->font, "FINAL", sf::Color::Blue, sf::Color::Green, sf::Color::Red);
+        this->font, "FINAL", sf::Color(38, 70, 83), sf::Color(42, 157, 143), sf::Color(233, 196, 106));
 
 }
 

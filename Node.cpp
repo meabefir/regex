@@ -4,11 +4,11 @@
 #include "AppData.h"
 #include "NodeEditorState.h"
 
-sf::Color Node::defaultNodeColor = sf::Color::Green;
-sf::Color Node::startNodeColor = sf::Color::Red;
-sf::Color Node::finalNodeColor = sf::Color::Blue;
-sf::Color Node::startFinalNodeColor = sf::Color::Magenta;
-sf::Color Node::activeColor = sf::Color::Yellow;
+sf::Color Node::defaultNodeColor = sf::Color(255, 183, 3);
+sf::Color Node::startNodeColor = sf::Color(214, 40, 40);
+sf::Color Node::finalNodeColor = sf::Color(58, 12, 163);
+sf::Color Node::startFinalNodeColor = sf::Color(114, 9, 183);
+sf::Color Node::activeColor = sf::Color(33, 158, 188);
 
 Node::Node(EditorState* editor, sf::Font* font, sf::Vector2f pos,
 			std::string name, const float radius, const float outlineThick):

@@ -7,7 +7,7 @@
 
 Spline::Spline(Transition* transition, Node* from, Node* to, sf::Text* text_render) :
 	transition(transition), from(from), to(to), textRender(text_render), visibleCharacters(10),
-	offsetScale(10.f), minOffset(150.f)
+	offsetScale(10.f), minOffset(150.f), defaultColor(sf::Color(233, 196, 106)), highlightColor(sf::Color(231, 111, 81))
 {
 	absDist = Helper::VectorDistance(from->getShape().getPosition(), to->getShape().getPosition());
 
@@ -22,7 +22,7 @@ Spline::Spline(Transition* transition, Node* from, Node* to, sf::Text* text_rend
 
 	vertexArray = sf::VertexArray(sf::LinesStrip, precision);
 	for (int i = 0; i < vertexArray.getVertexCount(); i++)
-		vertexArray[i].color = sf::Color::Black;	
+		vertexArray[i].color = defaultColor;
 
 	this->updateAnchorPoints();
 }
@@ -137,7 +137,7 @@ void Spline::udpateTextPos(bool applyLimit)
 	mid_pos += Helper::vectorRotatedRad(
 		Helper::GetNormalizedVector(this->vertexArray[this->precision / 2 + 1].position -
 									this->vertexArray[this->precision / 2].position),
-							-3.141592653f / 2.f) * 15.f;
+							-3.141592653f / 2.f) * (float)this->textRender->getCharacterSize() / 1.3f;
 	mid_pos += (this->vertexArray[this->precision / 2 + 1].position -
 		this->vertexArray[this->precision / 2].position) / 2.f;
 
@@ -159,12 +159,12 @@ void Spline::draw(sf::RenderTarget* target)
 	if (Helper::mouseInBox(this->textRender->getGlobalBounds()))
 	{
 		this->udpateTextPos(false);
-		this->setVertexColor(sf::Color::Red);
+		this->setVertexColor(highlightColor);
 	}
 	else if (this->textLimit == false)
 	{
 		this->udpateTextPos(true);
-		this->setVertexColor(sf::Color::Black);
+		this->setVertexColor(defaultColor);
 	}
 
 	// check if pos update is needed

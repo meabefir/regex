@@ -5,7 +5,7 @@ ArrowTip::ArrowTip(float size) :
 	vertexArray(sf::LinesStrip, 3), size(size)
 {
 	for (int i = 0; i < 3; i++)
-		vertexArray[i].color = sf::Color::Black;
+		vertexArray[i].color = sf::Color(233, 196, 106);
 }
 
 ArrowTip::~ArrowTip()

@@ -5,7 +5,7 @@
 #include "Mouse.h"
 
 TransitionCreationComp::TransitionCreationComp(EditorState* editor):
-	node(nullptr), editor(editor), line(sf::LinesStrip, 2), color(sf::Color::Blue)
+	node(nullptr), editor(editor), line(sf::LinesStrip, 2), color(sf::Color(233, 196, 106))
 {
 	for (int i = 0; i < this->line.getVertexCount(); i++)
 	{

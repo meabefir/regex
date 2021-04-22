@@ -59,6 +59,8 @@ void Button::update(const sf::Vector2f m)
 	{
 		this->buttonState = BTN_ACTIVE;
 
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+			this->buttonState = BTN_HELD;
 		// pressed
 		if (Mouse::stillClick)
 		{
@@ -75,6 +77,9 @@ void Button::update(const sf::Vector2f m)
 		this->shape.setFillColor(this->hoverColor);
 		break;
 	case BTN_PRESSED:
+		this->shape.setFillColor(this->activeColor);
+		break;
+	case BTN_HELD:
 		this->shape.setFillColor(this->activeColor);
 		break;
 	default:

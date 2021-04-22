@@ -13,7 +13,7 @@ MenuState::MenuState(sf::RenderWindow* window, std::vector<State*>* states):
 	float margin = 25.f;
 	sf::Vector2f size(200, this->window->getSize().y - 2 * margin);
 
-	this->whiteBox.setFillColor(sf::Color(0, 0, 0, 200));
+	this->whiteBox.setFillColor(sf::Color(0, 0, 0, 170));
 	this->whiteBox.setOutlineColor(sf::Color::Black);
 	this->whiteBox.setOutlineThickness(3);
 	this->whiteBox.setSize(size);
@@ -23,17 +23,17 @@ MenuState::MenuState(sf::RenderWindow* window, std::vector<State*>* states):
 	size = sf::Vector2f(150.f, 85.f);
 	this->buttons["LOAD"] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - size.x / 2.f,
 							50.f, size.x, size.y, this->font, "LOAD",
-							sf::Color::Green, sf::Color::Blue, sf::Color::Red);
+							sf::Color(38, 70, 83), sf::Color(42, 157, 143), sf::Color(233, 196, 106));
 	this->buttons["SAVE"] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - size.x / 2.f,
 							150.f, size.x, size.y, this->font, "SAVE",
-							sf::Color::Green, sf::Color::Blue, sf::Color::Red);
+							sf::Color(38, 70, 83), sf::Color(42, 157, 143), sf::Color(233, 196, 106));
 	this->buttons["CLEAR"] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - size.x / 2.f,
 							250.f, size.x, size.y, this->font, "CLEAR",
-							sf::Color::Green, sf::Color::Blue, sf::Color::Red);
+							sf::Color(38, 70, 83), sf::Color(42, 157, 143), sf::Color(233, 196, 106));
 
 	this->buttons["REGEX"] = new Button(this->whiteBox.getPosition().x + this->whiteBox.getSize().x / 2.f - size.x / 2.f,
-		this->whiteBox.getSize().y + this->whiteBox.getPosition().y - size.y - 10.f, size.x, size.y, this->font, "REGEX",
-		sf::Color::Green, sf::Color::Blue, sf::Color::Red);
+		this->whiteBox.getSize().y + this->whiteBox.getPosition().y - size.y - 25.f, size.x, size.y, this->font, "REGEX",
+		sf::Color(38, 70, 83), sf::Color(42, 157, 143), sf::Color(233, 196, 106));
 }
 
 MenuState::~MenuState()
